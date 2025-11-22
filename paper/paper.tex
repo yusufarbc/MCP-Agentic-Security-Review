@@ -1,0 +1,143 @@
+% !TeX program = pdflatex
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[turkish]{babel}
+\usepackage{lmodern}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[section]{placeins}
+\usepackage{flafter}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{etoolbox}
+
+\geometry{margin=2cm}
+\graphicspath{{./images/}}
+\setkeys{Gin}{width=\linewidth, keepaspectratio}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+}
+
+\title{Model Bağlam Protokolü (MCP) Ekosisteminin Eleştirel Bir Güvenlik İncelemesi}
+\author{}
+\date{2025}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Bu makale, Model Bağlam Protokolü (MCP) ekosisteminin güvenlik duruşunu eleştirel biçimde inceler. Ampirik taramalar, benchmark'lar, savunma çerçeveleri ve otomasyon çalışmaları temelinde tehdit manzarasını, MCP sunucu yaşam döngüsü boyunca ortaya çıkan riskleri ve azaltım desenlerini özetler. Araç zehirleme, araç açıklamalarında prompt enjeksiyonu, yaşam döngüsü yanlış yapılandırmaları gibi MCP'ye özgü riskleri klasik yazılım açıklarıyla kıyaslar; değerlendirme, kırmızı takım ve tedarik zinciri hijyeni alanlarındaki boşlukları vurgular.
+\end{abstract}
+
+\clearpage
+
+\section{Giriş}
+Model Bağlam Protokolü (MCP), LLM'lerin harici araçları keşfetmesini ve çağırmasını sağlayan şema odaklı, JSON-RPC istemci--sunucu standardıdır. LLM'leri statik metin üreticisinden otonom ajana dönüştürürken, belirsiz kontrol akışları ve yeni saldırı yüzeyleri yaratır. Bu çalışma, literatürdeki mimari, tehdit ve savunma bulgularını birleştirerek MCP'nin güvenlik duruşunu değerlendirir.
+
+\section{MCP Mimarisi ve Tehdit Yüzeyi}
+\begin{figure}[H]
+    \centering
+    \resizebox{\linewidth}{!}{\includegraphics{protocol.png}}
+    \caption{MCP mimarisi: İstemci, Sunucu, Araçlar ve Taşıma katmanı}
+\end{figure}
+\begin{itemize}
+    \item \textbf{İstemci (Host/Client):} LLM'yi barındırır, sunucuların yeteneklerini keşfeder; harici veriye açılan ilk yüzeydir.
+    \item \textbf{Sunucu (Server):} Araçları/kaynakları JSON-RPC ile sunar; kimlik doğrulama ve izolasyon eksikleri kritik risk oluşturur.
+    \item \textbf{Araçlar (Tools):} Harici işlevleri temsil eder; açıklama alanları prompt enjeksiyonuna ve araç zehirlemeye açıktır.
+    \item \textbf{Taşıma Katmanı:} StdIO veya HTTPS/SSE; şifreleme ve kimlik doğrulama kalitesi saldırı yüzeyini belirler.
+\end{itemize}
+Mimari, LLM ile yürütme ortamı arasında katı ayrım sağlasa da açıklama temelli planlama, anlam temelli saldırılara açık yeni bir katman yaratır.
+
+\section{Tehdit Modeli, Aktörler ve Vektörler}
+\begin{figure}[H]
+    \centering
+    \resizebox{\linewidth}{!}{\includegraphics{model.png}}
+    \caption{MCP etkileşim modeli ve saldırı yüzeyleri}
+\end{figure}
+\textbf{Tehdit aktörleri:} Kötü niyetli geliştirici (arka kapılı araç yayınlama), dış saldırgan (ağ/manipülasyon), kötü niyetli kullanıcı (yetki aşımı), yazılım hatası (yanlış konfigürasyon veya sömürülebilir kusur).
+
+\textbf{Başlıca vektörler:}
+\begin{itemize}
+    \item \textbf{Araç zehirleme:} Araç açıklamasına gizli talimat enjekte edilerek LLM planı manipüle edilir; veri sızıntısı veya yetkisiz eylem doğurur.
+    \item \textbf{Prompt enjeksiyonu:} Harici kaynaktaki (RAG, issue, dosya) zararlı talimat bağlama girerek ajanın eylemlerini yönlendirir.
+    \item \textbf{Kimlik doğrulama/konfigürasyon eksikleri:} Açıkta sunucular, zayıf OAuth/başlık kontrolü, yanlış sandbox ayarları.
+    \item \textbf{Zincirleme araç kötüye kullanımı (STAC):} Tek tek düşük riskli araçların ardışık kullanımıyla yüksek etkili eylem veya ifşa.
+    \item \textbf{DoS ve finansal DoS:} Aşırı token kullanımı veya maliyetli çağrılarla kaynak tüketimi.
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \resizebox{\linewidth}{!}{\includegraphics{diagram.png}}
+    \caption{Protokol akışı ve olası enjeksiyon noktaları}
+\end{figure}
+
+\section{Ampirik Bulgular ve Benchmark'lar}
+\subsection{Yaşam Döngüsü ve Taksonomi}
+Hou vd.\ \cite{hou2025landscape} dört faz ve on altı etkinlikten oluşan MCP sunucu yaşam döngüsüyle on altı tehdit senaryosu tanımlar; kötü niyetli geliştirici, dış saldırgan, kötü niyetli kullanıcı ve uygulama hatası eksenlerini kullanır.
+
+\subsection{Sunucu Sağlığı}
+Hasan vd.\ \cite{hasan2025firstglance} 1{,}899 açık kaynak MCP sunucusunda 8 MCP-özel zafiyet sınıfı, \%7{,}2 genel açık, \%5{,}5 araç zehirleme riski ve \%66 kod kokusu raporlar; MCP'ye özgü tarayıcı ihtiyacını vurgular.
+
+\subsection{Benchmark ve Dayanıklılık}
+Song vd.\ \cite{song2025help} MCPGAUGE ile proaktivite/uyum/etkinlik/maliyet boyutlarını ölçer; entegrasyonun her zaman kazanç getirmediğini gösterir. Luo vd.\ \cite{luo2025universe} ve Yin vd.\ \cite{yin2025livemcp} gerçek sunucularla testlerde frontier modellerin \%60 altına düştüğünü, uzun bağlam ve bilinmeyen araç hatalarını ortaya koyar. Fan vd.\ \cite{fan2025mcptoolbench} 4k+ sunucuyla geniş ölçekli araç kullanımı benchmark'ı sağlar.
+
+\subsection{Red Team ve Savunma}
+Xing vd.\ \cite{xing2025guard} üç aşamalı MCP-Guard ve 70k örnekli MCP-AttackBench ile \%96 doğruluk raporlar. He vd.\ \cite{he2025automated} AutoMalTool ile otomatik kötü niyetli araç üretip mevcut savunmaları aşabildiğini gösterir; üretimin gerçek ortamlarda dayanıklılığı belirsizdir.
+
+\subsection{Otomasyon ve Barındırma}
+Mastouri vd.\ \cite{mastouri2025rest} OpenAPI'den MCP sunucusu üreten AutoMCP'nin ufak sözleşme düzeltmeleriyle \%99{,}9 başarı sağladığını bildirir. Tokal vd.\ \cite{tokal2025agentx} AgentX iş akışıyla FaaS barındırmanın maliyet/gecikme karşılıklarını inceler. Krishnan \cite{krishnan2025multiagent} çok ajanlı koordinasyonda standart bağlam paylaşımının verimini gösterir.
+
+\section{Savunma Stratejileri ve İyi Uygulamalar}
+\textbf{Sistem düzeyi:} Bilgi akışı kontrolü (IFC) ve dinamik taint-tracking ile hassas/bütünlük etiketleme; sandboxing ile dosya/ağ yetkilerini sınırla; plan doğrulama ve guard modeliyle yüksek etkili adımları denetle.
+
+\textbf{Taşıma ve kimlik:} TLS zorunlu, mTLS tercihi; OAuth 2.1 ve kaynak göstergeleriyle kapsam/kuota bazlı yetkilendirme; imzalı token ve kısa ömür.
+
+\textbf{Gözlem ve tetkik:} Plan tabanlı değerlendirme (LiveMCP-101), detaylı günlükleme ve anomali izleme; kırmızı takım otomasyonu (AutoMalTool benzeri) periyodik çalıştırma.
+
+\textbf{Tedarik zinciri:} İmzalı paketler, sürüm pinleme, SBOM üretimi; yayımlanan araçlar için açıklama/bütünlük doğrulaması.
+
+\section{Öneriler}
+\begin{itemize}
+    \item CI/CD'de MCP-özel tarama: açıklama zehirleme ve şema tutarlılığı için statik+semantik analiz.
+    \item Her dağıtımda imzalı paket, sürüm pinleme ve SBOM; bütünlük doğrulaması zorunlu.
+    \item Yüksek etkili eylemler için guard modeli + insan onayı; araç başına kapsam/kuota ve scoped kimlik bilgisi.
+    \item Canlıya çıkmadan plan tabanlı stres testleri ve AutoMalTool tarzı kırmızı takım koşuları uygulama.
+    \item OpenAPI'den otomatik sunucu üretimiyle manuel yapıştırma hatalarını azaltma; spek kalitesini iyileştirme.
+\end{itemize}
+
+\section{Sonuç}
+MCP, birlikte çalışabilirlik ve araç keşfiyle değer yaratırken protokol-özel riskler getirir. Ampirik veriler anlamlı zafiyet oranlarını, benchmark'lar orkestrasyon kırılganlığını ve otomatik zehirleme riskini ortaya koymaktadır. Güvenli benimseme için katmanlı savunma, tedarik zinciri hijyeni, plan tabanlı test ve kırmızı takım çalışmaları birlikte uygulanmalıdır.
+
+\begin{thebibliography}{99}
+\bibitem{hou2025landscape} Hou, X., Zhao, Y., Wang, S., \& Wang, H. (2025). \textit{Model Context Protocol (MCP): Landscape, Security Threats, and Future Research Directions}. arXiv:2503.23278.
+\bibitem{krishnan2025multiagent} Krishnan, N. (2025). \textit{Advancing Multi-Agent Systems Through Model Context Protocol}. arXiv:2504.21030.
+\bibitem{ehtesham2025survey} Ehtesham, A., Singh, A., Gupta, G. K., \& Kumar, S. (2025). \textit{A survey of agent interoperability protocols}. arXiv:2505.02279.
+\bibitem{hasan2025firstglance} Hasan, M. M., Li, H., Fallahzadeh, E., Rajbahadur, G. K., Adams, B., \& Hassan, A. E. (2025). \textit{Model Context Protocol (MCP) at First Glance}. arXiv:2506.13538.
+\bibitem{flotho2025mcpmed} Flotho, M., Diks, I. F., Flotho, P., Molano, L.-A. G., Hirsch, P., \& Keller, A. (2025). \textit{MCPmed}. arXiv:2507.08055.
+\bibitem{mastouri2025rest} Mastouri, M., Ksontini, E., \& Kessentini, W. (2025). \textit{Making REST APIs Agent-Ready}. arXiv:2507.16044.
+\bibitem{fan2025mcptoolbench} Fan, S., Ding, X., Zhang, L., \& Mo, L. (2025). \textit{MCPToolBench++}. arXiv:2508.07575.
+\bibitem{xing2025guard} Xing, W., Qi, Z., Qin, Y., Li, Y., Chang, C., et al. (2025). \textit{MCP-Guard}. arXiv:2508.10991.
+\bibitem{song2025help} Song, W., Zhong, H., Ding, Z., Xue, J., \& Li, Y. (2025). \textit{Help or Hurdle?}. arXiv:2508.12566.
+\bibitem{luo2025universe} Luo, Z., Shen, Z., Yang, W., Zhao, Z., Jwalapuram, P., et al. (2025). \textit{MCP-Universe}. arXiv:2508.14704.
+\bibitem{yin2025livemcp} Yin, M., Shen, D., Xu, S., Han, J., Dong, S., et al. (2025). \textit{LiveMCP-101}. arXiv:2508.15760.
+\bibitem{chhetri2025transport} Chhetri, G., Somvanshi, S., Islam, M. M., Brotee, S., Mimi, M. S., et al. (2025). \textit{Model Context Protocols in Adaptive Transport Systems}. arXiv:2508.19239.
+\bibitem{tokal2025agentx} Tokal, S. S. K. A., Jha, V., Eswaran, A., Jayachandran, P., \& Simmhan, Y. (2025). \textit{AgentX}. arXiv:2509.07595.
+\bibitem{he2025automated} He, P., Li, C., Zhao, B., Du, T., \& Ji, S. (2025). \textit{Automatic Red Teaming LLM-based Agents}. arXiv:2509.21011.
+\bibitem{singh2025survey} Singh, A., Ehtesham, A., Kumar, S., \& Talaei Khoei, T. (2025). \textit{A Survey of the Model Context Protocol (MCP)}. Preprints 202504.0245.
+\bibitem{bhandarwar2025integrating} Bhandarwar, N. (2025). \textit{Integrating Generative AI and Model Context Protocol}. Int. J. of Computer Trends and Technology.
+\bibitem{coppolino2025asset} Coppolino, L., Iannaccone, A., Nardone, R., \& Petruolo, A. (2025). \textit{Asset Discovery in Critical Infrastructures: An LLM-Based Approach}. Electronics 14(32):3267.
+\bibitem{korinek2025agents} Korinek, A. (2025). \textit{AI Agents for Economic Research}. NBER Working Paper 34202.
+\end{thebibliography}
+
+\end{document}
