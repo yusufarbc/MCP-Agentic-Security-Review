@@ -1,143 +1,218 @@
-% !TeX program = pdflatex
-\documentclass[11pt,a4paper]{article}
+% IEEE conference paper on MCP security
+\documentclass[conference,a4paper]{IEEEtran}
+\IEEEoverridecommandlockouts
+
+\usepackage[turkish]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage[turkish]{babel}
-\usepackage{lmodern}
-\usepackage{geometry}
-\usepackage{graphicx}
-\usepackage{float}
-\usepackage[section]{placeins}
-\usepackage{flafter}
-\usepackage{caption}
-\usepackage{subcaption}
-\usepackage{booktabs}
+\usepackage[pdftex]{graphicx}
+\usepackage{multirow}
+\usepackage{cite}
+\usepackage[cmex10]{amsmath}
 \usepackage{siunitx}
-\usepackage{hyperref}
-\usepackage{longtable}
+\usepackage{array}
+\usepackage[caption=false,lofdepth,lotdepth]{subfig}
+\usepackage{acronym}
 \usepackage{xcolor}
 \usepackage{microtype}
-\usepackage{etoolbox}
+\usepackage{booktabs}
 
-\geometry{margin=2cm}
-\graphicspath{{./images/}}
-\setkeys{Gin}{width=\linewidth, keepaspectratio}
+\hyphenation{op-tical net-works semi-conduc-tor}
+\setlength{\textfloatsep}{5pt}
 
-\hypersetup{
-    colorlinks=true,
-    linkcolor=blue,
-    citecolor=blue,
-    urlcolor=blue
+\AtBeginDocument{\renewcommand\tablename{TABLO}}
+
+% Türkçe özet ve anahtar kelime ortamlarını IEEE ortamlarına eşleştir
+\renewenvironment{ozet}{%
+  \renewcommand\abstractname{Özet}%
+  \begin{abstract}%
+}{%
+  \end{abstract}%
+}
+\renewenvironment{IEEEanahtar}{%
+  \renewcommand\IEEEkeywordsname{Anahtar Kelimeler}%
+  \begin{IEEEkeywords}%
+}{%
+  \end{IEEEkeywords}%
 }
 
-\title{Model Bağlam Protokolü (MCP) Ekosisteminin Eleştirel Bir Güvenlik İncelemesi}
-\author{}
-\date{2025}
-
 \begin{document}
+
+\title{Model Bağlam Protokolü (MCP): Mimari Paradigmaların, Tehdit Taksonomisinin ve Ajanik Güvenlik Yönetişiminin Eleştirel İncelenmesi\\
+       Model Context Protocol (MCP): A Critical Review of Architectural Paradigms, Threat Taxonomy, and Agentic Security Governance}
+
+\author{%
+  \IEEEauthorblockN{Yusuf Talha ARABACI}%
+  \IEEEauthorblockA{%
+    Yazılım Mühendisliği Yüksek Lisans Öğrencisi\\%
+    Karabük Üniversitesi\\%
+    Karabük, Türkiye%
+  }%
+}
+
 \maketitle
 
+\begin{ozet}
+Model Bağlam Protokolü (Model Context Protocol, MCP), büyük dil modellerinin (LLM) harici araçlar ve veri kaynaklarıyla etkileşimini standartlaştırmak amacıyla 2024 yılının sonlarında tanıtılan açık bir protokoldür. Bu çalışma, hızla büyüyen MCP ekosistemini mimari, güvenlik ve ajanik yönetişim perspektiflerinden eleştirel bir biçimde sentezlemektedir. MCP, LLM entegrasyonundaki $N \times M$ parçalanma sorununu çözmeyi hedefleyerek kendisini yapay zekâ için ``evrensel konektör'' (USB‑C) olarak konumlandırmaktadır. 2025 yılında eşzamanlı olarak yayımlanan akademik çalışmalar, protokolün birinci nesil ajan sistemlerinin ölçeklenebilirlik ve güvenlik sınırlarına verilen acil bir endüstriyel yanıt olduğunu göstermektedir. Çalışmada MCP'nin temel mimari bileşenleri (İstemci--Sunucu, Araçlar, Kaynaklar), Hou vd.\ (2025) tarafından geliştirilen on altı senaryoluk tehdit taksonomisi ve Hasan vd.\ (2025) tarafından ampirik olarak ortaya konan güvenlik ve bakım zorlukları analiz edilmektedir. Son olarak, protokol düzeyinde savunma mekanizmaları (MCP‑Guard, zMCP) ve merkezi olmayan bir ekosistemde sürdürülebilir büyüme için kritik olan ajanik güvenlik yönetişimi tartışılmaktadır.
+\end{ozet}
+\begin{IEEEanahtar}
+Model Bağlam Protokolü, MCP, mimari paradigmalar, tehdit taksonomisi, ajanik güvenlik yönetişimi.
+\end{IEEEanahtar}
+
 \begin{abstract}
-Bu makale, Model Bağlam Protokolü (MCP) ekosisteminin güvenlik duruşunu eleştirel biçimde inceler. Ampirik taramalar, benchmark'lar, savunma çerçeveleri ve otomasyon çalışmaları temelinde tehdit manzarasını, MCP sunucu yaşam döngüsü boyunca ortaya çıkan riskleri ve azaltım desenlerini özetler. Araç zehirleme, araç açıklamalarında prompt enjeksiyonu, yaşam döngüsü yanlış yapılandırmaları gibi MCP'ye özgü riskleri klasik yazılım açıklarıyla kıyaslar; değerlendirme, kırmızı takım ve tedarik zinciri hijyeni alanlarındaki boşlukları vurgular.
+The Model Context Protocol (MCP) is an open protocol introduced in late 2024 to standardize the interaction of large language models (LLMs) with external tools and data sources. This paper critically synthesizes the rapidly growing MCP ecosystem from architectural, security, and agentic governance perspectives. MCP aims to solve the $N \times M$ integration problem in LLM tooling, positioning itself as a ``universal connector'' (USB‑C) for AI. The burst of MCP-related publications in 2025 suggests that the protocol is an urgent industrial response to the scalability and security limits of first-generation agent systems. We analyze MCP's core architectural components (Client--Server, Tools, Resources), the sixteen-scenario threat taxonomy proposed by Hou et al.\ (2025), and the empirically observed security and maintainability challenges identified by Hasan et al.\ (2025). Finally, we discuss protocol-level defense mechanisms (MCP‑Guard, zMCP) and the agentic security governance required for sustainable growth in a decentralized MCP ecosystem.
 \end{abstract}
+\begin{IEEEkeywords}
+Model Context Protocol, MCP, security, architecture, threat taxonomy, agentic governance.
+\end{IEEEkeywords}
 
-\clearpage
+\IEEEpeerreviewmaketitle
 
-\section{Giriş}
-Model Bağlam Protokolü (MCP), LLM'lerin harici araçları keşfetmesini ve çağırmasını sağlayan şema odaklı, JSON-RPC istemci--sunucu standardıdır. LLM'leri statik metin üreticisinden otonom ajana dönüştürürken, belirsiz kontrol akışları ve yeni saldırı yüzeyleri yaratır. Bu çalışma, literatürdeki mimari, tehdit ve savunma bulgularını birleştirerek MCP'nin güvenlik duruşunu değerlendirir.
+\section{Giriş: Ajans Paradigması ve Entegrasyon Zorunluluğu}
+Büyük dil modelleri (LLM'ler), yalnızca statik bilgiye dayalı metin üreten sistemler olmaktan çıkıp, gerçek dünya görevlerini yerine getirebilen aktif, otonom ajanlara dönüşmüştür. Bu ajans paradigması değişimi, LLM'lerin harici API'ler, veritabanları ve dosya sistemleri gibi kaynakları güvenilir ve ölçeklenebilir bir şekilde çağırmasını zorunlu kılmaktadır. Geleneksel yaklaşımda her LLM (N) için her bir harici araç (M) özel, sabit kodlu bağlayıcılar gerektirmekte ve bu durum ``$N \times M$ entegrasyon problemi'' olarak adlandırılan önemli bir karmaşıklık kaynağına yol açmaktadır.
 
-\section{MCP Mimarisi ve Tehdit Yüzeyi}
-\begin{figure}[H]
-    \centering
-    \resizebox{\linewidth}{!}{\includegraphics{protocol.png}}
-    \caption{MCP mimarisi: İstemci, Sunucu, Araçlar ve Taşıma katmanı}
-\end{figure}
+Model Bağlam Protokolü (MCP), bu parçalanmış entegrasyon ortamına karşı, birleşik, çift yönlü iletişim ve dinamik keşif sağlayan açık bir standart olarak ortaya çıkmıştır. MCP, LLM'lerin yalnızca araçların temel açıklamalarına dayandığı basit işlev çağrısından, protokol odaklı bir bağlam sunma yöntemine doğru bir mimari dönüşümü temsil etmektedir. Anthropic tarafından 2024 yılının sonlarında tanıtılan protokol, kısa sürede fiili bir standart haline gelmiş; 2025 yılı itibarıyla farklı satıcıların (OpenAI, Google DeepMind, Microsoft vb.) ürünlerinde de desteklenmeye başlanmıştır \cite{hou2025landscape,singh2025survey}.
+
+Bu bildirinin amacı, MCP ekosistemine ilişkin güncel literatürü bir araya getirerek mimari paradigmaları, tehdit taksonomisini ve ajanik güvenlik yönetişimini eleştirel bir çerçevede incelemektir. Bu bağlamda çalışmanın katkıları özetle şu şekildedir:
 \begin{itemize}
-    \item \textbf{İstemci (Host/Client):} LLM'yi barındırır, sunucuların yeteneklerini keşfeder; harici veriye açılan ilk yüzeydir.
-    \item \textbf{Sunucu (Server):} Araçları/kaynakları JSON-RPC ile sunar; kimlik doğrulama ve izolasyon eksikleri kritik risk oluşturur.
-    \item \textbf{Araçlar (Tools):} Harici işlevleri temsil eder; açıklama alanları prompt enjeksiyonuna ve araç zehirlemeye açıktır.
-    \item \textbf{Taşıma Katmanı:} StdIO veya HTTPS/SSE; şifreleme ve kimlik doğrulama kalitesi saldırı yüzeyini belirler.
-\end{itemize}
-Mimari, LLM ile yürütme ortamı arasında katı ayrım sağlasa da açıklama temelli planlama, anlam temelli saldırılara açık yeni bir katman yaratır.
-
-\section{Tehdit Modeli, Aktörler ve Vektörler}
-\begin{figure}[H]
-    \centering
-    \resizebox{\linewidth}{!}{\includegraphics{model.png}}
-    \caption{MCP etkileşim modeli ve saldırı yüzeyleri}
-\end{figure}
-\textbf{Tehdit aktörleri:} Kötü niyetli geliştirici (arka kapılı araç yayınlama), dış saldırgan (ağ/manipülasyon), kötü niyetli kullanıcı (yetki aşımı), yazılım hatası (yanlış konfigürasyon veya sömürülebilir kusur).
-
-\textbf{Başlıca vektörler:}
-\begin{itemize}
-    \item \textbf{Araç zehirleme:} Araç açıklamasına gizli talimat enjekte edilerek LLM planı manipüle edilir; veri sızıntısı veya yetkisiz eylem doğurur.
-    \item \textbf{Prompt enjeksiyonu:} Harici kaynaktaki (RAG, issue, dosya) zararlı talimat bağlama girerek ajanın eylemlerini yönlendirir.
-    \item \textbf{Kimlik doğrulama/konfigürasyon eksikleri:} Açıkta sunucular, zayıf OAuth/başlık kontrolü, yanlış sandbox ayarları.
-    \item \textbf{Zincirleme araç kötüye kullanımı (STAC):} Tek tek düşük riskli araçların ardışık kullanımıyla yüksek etkili eylem veya ifşa.
-    \item \textbf{DoS ve finansal DoS:} Aşırı token kullanımı veya maliyetli çağrılarla kaynak tüketimi.
-\end{itemize}
-\begin{figure}[H]
-    \centering
-    \resizebox{\linewidth}{!}{\includegraphics{diagram.png}}
-    \caption{Protokol akışı ve olası enjeksiyon noktaları}
-\end{figure}
-
-\section{Ampirik Bulgular ve Benchmark'lar}
-\subsection{Yaşam Döngüsü ve Taksonomi}
-Hou vd.\ \cite{hou2025landscape} dört faz ve on altı etkinlikten oluşan MCP sunucu yaşam döngüsüyle on altı tehdit senaryosu tanımlar; kötü niyetli geliştirici, dış saldırgan, kötü niyetli kullanıcı ve uygulama hatası eksenlerini kullanır.
-
-\subsection{Sunucu Sağlığı}
-Hasan vd.\ \cite{hasan2025firstglance} 1{,}899 açık kaynak MCP sunucusunda 8 MCP-özel zafiyet sınıfı, \%7{,}2 genel açık, \%5{,}5 araç zehirleme riski ve \%66 kod kokusu raporlar; MCP'ye özgü tarayıcı ihtiyacını vurgular.
-
-\subsection{Benchmark ve Dayanıklılık}
-Song vd.\ \cite{song2025help} MCPGAUGE ile proaktivite/uyum/etkinlik/maliyet boyutlarını ölçer; entegrasyonun her zaman kazanç getirmediğini gösterir. Luo vd.\ \cite{luo2025universe} ve Yin vd.\ \cite{yin2025livemcp} gerçek sunucularla testlerde frontier modellerin \%60 altına düştüğünü, uzun bağlam ve bilinmeyen araç hatalarını ortaya koyar. Fan vd.\ \cite{fan2025mcptoolbench} 4k+ sunucuyla geniş ölçekli araç kullanımı benchmark'ı sağlar.
-
-\subsection{Red Team ve Savunma}
-Xing vd.\ \cite{xing2025guard} üç aşamalı MCP-Guard ve 70k örnekli MCP-AttackBench ile \%96 doğruluk raporlar. He vd.\ \cite{he2025automated} AutoMalTool ile otomatik kötü niyetli araç üretip mevcut savunmaları aşabildiğini gösterir; üretimin gerçek ortamlarda dayanıklılığı belirsizdir.
-
-\subsection{Otomasyon ve Barındırma}
-Mastouri vd.\ \cite{mastouri2025rest} OpenAPI'den MCP sunucusu üreten AutoMCP'nin ufak sözleşme düzeltmeleriyle \%99{,}9 başarı sağladığını bildirir. Tokal vd.\ \cite{tokal2025agentx} AgentX iş akışıyla FaaS barındırmanın maliyet/gecikme karşılıklarını inceler. Krishnan \cite{krishnan2025multiagent} çok ajanlı koordinasyonda standart bağlam paylaşımının verimini gösterir.
-
-\section{Savunma Stratejileri ve İyi Uygulamalar}
-\textbf{Sistem düzeyi:} Bilgi akışı kontrolü (IFC) ve dinamik taint-tracking ile hassas/bütünlük etiketleme; sandboxing ile dosya/ağ yetkilerini sınırla; plan doğrulama ve guard modeliyle yüksek etkili adımları denetle.
-
-\textbf{Taşıma ve kimlik:} TLS zorunlu, mTLS tercihi; OAuth 2.1 ve kaynak göstergeleriyle kapsam/kuota bazlı yetkilendirme; imzalı token ve kısa ömür.
-
-\textbf{Gözlem ve tetkik:} Plan tabanlı değerlendirme (LiveMCP-101), detaylı günlükleme ve anomali izleme; kırmızı takım otomasyonu (AutoMalTool benzeri) periyodik çalıştırma.
-
-\textbf{Tedarik zinciri:} İmzalı paketler, sürüm pinleme, SBOM üretimi; yayımlanan araçlar için açıklama/bütünlük doğrulaması.
-
-\section{Öneriler}
-\begin{itemize}
-    \item CI/CD'de MCP-özel tarama: açıklama zehirleme ve şema tutarlılığı için statik+semantik analiz.
-    \item Her dağıtımda imzalı paket, sürüm pinleme ve SBOM; bütünlük doğrulaması zorunlu.
-    \item Yüksek etkili eylemler için guard modeli + insan onayı; araç başına kapsam/kuota ve scoped kimlik bilgisi.
-    \item Canlıya çıkmadan plan tabanlı stres testleri ve AutoMalTool tarzı kırmızı takım koşuları uygulama.
-    \item OpenAPI'den otomatik sunucu üretimiyle manuel yapıştırma hatalarını azaltma; spek kalitesini iyileştirme.
+  \item MCP mimarisi, tehdit modeli ve ampirik bulgular tek bir çerçevede sentezlenerek ekosistemin güçlü ve zayıf yönleri karşılaştırmalı olarak tartışılmaktadır.
+  \item Literatürde dağınık halde bulunan benchmark, stres testi ve kırmızı takım çalışmalarının sonuçları, MCP'ye özgü siber risklerin görünür kılınması için tematik olarak sınıflandırılmaktadır.
+  \item Protokol, host ve organizasyon düzeyinde uygulanabilir savunma stratejileri ile MCP tedarik zinciri hijyenine ve ajanik güvenlik yönetişimine ilişkin eylem odaklı öneriler geliştirilmektedir.
 \end{itemize}
 
-\section{Sonuç}
-MCP, birlikte çalışabilirlik ve araç keşfiyle değer yaratırken protokol-özel riskler getirir. Ampirik veriler anlamlı zafiyet oranlarını, benchmark'lar orkestrasyon kırılganlığını ve otomatik zehirleme riskini ortaya koymaktadır. Güvenli benimseme için katmanlı savunma, tedarik zinciri hijyeni, plan tabanlı test ve kırmızı takım çalışmaları birlikte uygulanmalıdır.
+\section{Mimari Paradigmalar ve Temeller}
+MCP, ajanların harici sistemlerle güvenli ve standart bir biçimde etkileşmesini sağlayan bir istemci--sunucu mimarisi üzerine kuruludur. Bu bölümde mimarinin çekirdek bileşenleri, protokol yapısı ve sunucu yaşam döngüsü ele alınmaktadır.
+
+\subsection{Çekirdek Bileşenler ve Protokol Yapısı}
+MCP mimarisi, LLM'i barındıran \emph{MCP Host}, sunucularla protokol üzerinden konuşan \emph{MCP Client} ve harici yetenekleri standart formatta sunan \emph{MCP Server} bileşenlerinden oluşur.
+
+Protokolün temel özellikleri şöyle özetlenebilir:
+\begin{itemize}
+  \item \textbf{İletişim Standardı:} MCP, uygulama tutarlılığını sağlamak için JSON--RPC~2.0 standardına dayanır. Bu tercih, istek/yanıt yaşam döngülerinin açıkça tanımlanmasını, hata kodlarının standardizasyonunu ve mesaj düzeyinde kimliklendirme/izin katmanlarının eklenmesini kolaylaştırır.
+  \item \textbf{Temel Primitifler:} MCP, dış dünyadan sağlanan bağlamı üç ana soyutlamaya ayırır:
+  \begin{itemize}
+    \item \emph{Araçlar (Tools):} LLM'nin çağırabildiği yürütülebilir fonksiyonlar (örneğin dosya okuma, HTTP isteği gönderme).
+    \item \emph{Kaynaklar (Resources):} LLM'nin okuyabildiği pasif veri varlıkları (dosyalar, veritabanı satırları, log kayıtları vb.).
+    \item \emph{İstemler (Prompts):} Yeniden kullanılabilir, standartlaştırılmış iş akışlarını veya etkileşim desenlerini içeren şablonlar.
+  \end{itemize}
+\end{itemize}
+
+Bu soyutlamalar, LLM'nin akıl yürütme ortamını harici yürütme ortamından ayıran açık bir güven sınırı tanımlar. Host tarafında model, araç ve kaynak açıklamalarını kullanarak planlama yapar; sunucu tarafında ise gerçek sistem çağrıları gerçekleştirilen kod yürütme katmanı bulunur \cite{krishnan2025multiagent}.
+
+\begin{figure}[!t]
+  \centering
+  \includegraphics{protocol}
+  \caption{MCP istemci--sunucu mimarisinin temel akışı. Şema, MCP Host/Client/Server bileşenlerini, JSON--RPC tabanlı iletişimi, araçlar ve kaynaklar üzerinden bağlam akışını ve $N \times M$ entegrasyon problemine getirilen standartlaştırılmış çözümü göstermektedir.}
+  \label{fig:mcp-architecture}
+\end{figure}
+
+\subsection{Sunucu Yaşam Döngüsü ve Yönetimi}
+MCP entegrasyonu, sadece arayüz tanımı sağlamaktan ibaret değildir; tam bir yaşam döngüsü yönetimi gerektirir. Hou vd.\ \cite{hou2025landscape}, bir MCP sunucusunun yaşam döngüsünü \emph{oluşturma}, \emph{dağıtım}, \emph{işletme} ve \emph{bakım} olmak üzere dört aşamaya ayırmış ve bu aşamaları on altı temel faaliyete bölmüştür.
+
+Oluşturma aşamasında araç açıklamaları ve şemalar tasarlanırken, dağıtım aşamasında sunucunun hangi ortamda, hangi kimlik bilgileriyle ve hangi sandbox profiliyle çalışacağı belirlenir. İşletme ve bakım aşamaları, loglama, versiyonlama, zafiyet yönetimi ve geri alma (rollback) stratejilerini içerir. Özellikle dağıtım aşaması, sunucunun güvenli ve tutarlı bir şekilde çalışıp çalışmadığını belirlediği için kritiktir; hatalı yapılandırmalar veya aşırı yetkili çalışma ortamları ciddi saldırı yüzeyleri yaratabilir.
+
+\section{Tehdit Taksonomisi ve Güvenlik Zorlukları}
+MCP, LLM'leri harici yürütme ortamlarına bağlayarak önemli yeni saldırı yüzeyleri yaratmaktadır. Bu bölüm, Hou vd.\ tarafından geliştirilen tehdit taksonomisini ve ekosistemin karşı karşıya olduğu başlıca güvenlik zorluklarını özetlemektedir.
+
+\subsection{Tehdit Taksonomisi ve Saldırgan Modelleri}
+Hou vd.\ \cite{hou2025landscape}, MCP sunucu yaşam döngüsü boyunca ortaya çıkan güvenlik ve gizlilik risklerini dört ana saldırgan türüne göre kategorize etmektedir:
+\begin{enumerate}
+  \item \textbf{Kötü niyetli geliştiriciler:} Arkakapı içeren veya kasıtlı olarak zayıf yapılandırılmış sunucular yayınlayan aktörler.
+  \item \textbf{Harici saldırganlar:} Ağ trafiğini dinleyen, zayıf kimlik doğrulama ve hatalı TLS yapılandırmalarından yararlanan saldırganlar.
+  \item \textbf{Kötü niyetli kullanıcılar:} LLM'yi kandırarak sahip olmadıkları yetkileri dolaylı biçimde kötüye kullanan son kullanıcılar.
+  \item \textbf{Güvenlik açıkları:} İstenmeyen kodlama hataları, konfigürasyon hataları ve güncel olmayan bağımlılıklar.
+\end{enumerate}
+
+Bu taksonomi, sunucu yaşam döngüsünün her fazında ortaya çıkabilen on altı farklı tehdit senaryosunu kapsar ve MCP ekosistemi için referans bir risk haritası sunar.
+
+\subsection{Kritik Saldırı Vektörleri}
+MCP'ye özgü en kritik saldırı vektörleri kısaca şu şekilde özetlenebilir:
+\begin{itemize}
+  \item \textbf{Araç zehirlenmesi (tool poisoning):} Saldırganın, aracın tanımına (description) gizli, zararlı talimatlar enjekte etmesiyle LLM'nin akıl yürütme sürecini manipüle etmesidir. Bu saldırı, modelin anlamsal yoruma güvenmesini istismar eder ve geleneksel güvenlik duvarlarının ``anlamı'' tarayamaması nedeniyle benzersiz bir zorluk teşkil eder \cite{xing2025guard}.
+  \item \textbf{Dolaylı istem enjeksiyonu (indirect prompt injection):} Saldırganın, LLM'nin okuyacağı ancak doğrudan güvenmediği bir MCP kaynağına (resource) kötü niyetli talimatlar gömmesiyle gerçekleşir. Model, bu zehirli kaynağı güvenilir bağlam gibi yorumlayarak kritik bir aracı çağırmaya ikna olabilir.
+  \item \textbf{Araç zincirleme suistimali (tool chaining abuse -- STAC):} Tek tek masum görünen düşük riskli araçların LLM tarafından birleştirilmesiyle veri sızdırma veya yetkisiz yüksek etkili işlemler yapılmasıdır. Bu saldırılar, modelin kümülatif zararı öngörme ve planlama hatalarını istismar eder.
+\end{itemize}
+
+\subsection{Ampirik Güvenlik ve Kod Kalitesi Analizleri}
+Hasan vd.\ \cite{hasan2025firstglance}, 1\,899 açık kaynak MCP sunucusunu inceleyen büyük ölçekli bir yazılım mühendisliği çalışması yürütmüş ve ekosistemin güvenlik hijyeni açısından kaygı verici bir tablo çizdiğini göstermiştir. Bulgulara göre:
+\begin{itemize}
+  \item İncelenen sunucuların yaklaşık \%7,2'sinde genel güvenlik açıkları bulunmaktadır.
+  \item Sunucuların \%5,5'inde MCP'ye özgü araç zehirlenmesi riskleri raporlanmıştır.
+  \item Projelerin \%66'sında uzun vadeli bakımı zorlaştıran yazılım mühendisliği kusurları (``code smells'') tespit edilmiştir.
+\end{itemize}
+
+Bu bulgular, geliştiricilerin protokole hızla adapte olurken güvenlik en iyi uygulamalarını göz ardı ettiğini ve MCP'ye özgü zafiyet tarama tekniklerine acil ihtiyaç olduğunu göstermektedir.
+
+\section{Ajanik Güvenlik Yönetişimi ve Savunma Çerçeveleri}
+MCP'nin güvenlik zorlukları, savunma stratejilerinin sadece çıktı filtresi olmaktan çıkıp, planlama ve yürütme denetimine odaklanan ajanik güvenlik yönetişimi perspektifiyle ele alınmasını gerektirmektedir.
+
+\subsection{Protokol Düzeyinde Güvenlik ve Yönetişim}
+MCP sunucularının çoğunlukla bireysel geliştiriciler veya küçük ekipler tarafından bağımsız olarak yönetilmesi, merkezi bir denetim otoritesi olmaksızın yama tutarsızlıklarına ve yapılandırma sapmalarına yol açmaktadır. Gelecekteki çalışmaların, ekosistem genelinde dayanıklılığı artırmak için zorunlu yapılandırma doğrulaması, otomatik sürüm kontrolü ve bütünlük denetimi gibi teknik yönetişim çözümlerine odaklanması gerektiği vurgulanmaktadır \cite{narajala2025enterprise}.
+
+Kurumsal benimseme açısından Sıfır Güven (Zero Trust) ilkeleri hayati önem taşır. zMCP gibi önerilen uzantılar, her işlem için kimlik doğrulama ve yetkilendirmeyi zorunlu kılarak Tam Zamanında (Just‑In‑Time, JIT) erişim kontrolü stratejilerini desteklemektedir. Bu yaklaşım, olası bir ihlal durumunda saldırganın hareket alanını radikal biçimde kısıtlar.
+
+Dağıtım aşamasında her MCP sunucusunun özel bir sandbox ortamında çalıştırılması, dosya sistemi, ağ ve sistem komutları erişimlerinin en az ayrıcalık ilkesiyle sınırlandırılması gerekmektedir. Bu izolasyon, olası bir komut enjeksiyonu veya uzaktan kod çalıştırma (RCE) durumunda hasarın kontrol altında tutulmasını sağlar.
+
+\subsection{İleri Savunma Çerçeveleri}
+Xing vd.\ tarafından önerilen MCP‑Guard çerçevesi \cite{xing2025guard}, araç zehirleme ve veri sızdırma saldırılarına karşı koymak için katmanlı bir savunma mimarisi sunar. Bu mimari, hafif statik tarama, derin öğrenme tabanlı zararlı istem dedektörü ve son karar için hafif bir LLM ``hakem'' modülünü içeren üç aşamalı bir huni yapısıyla çalışır; anlamsal saldırıları yüksek doğrulukla tespit edebildiği raporlanmaktadır.
+
+MCPSafetyScanner gibi ajan tabanlı denetim araçları \cite{radosevich2025audit}, MCP sunucularının güvenlik açıklarını otomatik olarak değerlendirmeye yönelik ilk girişimler arasındadır. Bunun yanı sıra, bilgi akışı kontrolü (Information Flow Control, IFC) prensipleri, zehirli bilginin kritik kararları etkilemesini önlemek için veri sızıntısı ve dolaylı prompt enjeksiyonu tehditlerine karşı en umut verici mimari yaklaşımlardan biri olarak öne çıkmaktadır.
+
+\section{Ampirik Değerlendirme, Uygulamalar ve Standardizasyon}
+
+\subsection{Performans Değerlendirmesi ve Sınırlamalar}
+MCP'nin etkinliği, LLM'lerin araç kullanımındaki ampirik performansıyla değerlendirilmektedir. Bu alanda iki temel kıyaslama çerçevesi öne çıkmaktadır:
+\begin{itemize}
+  \item \textbf{MCPGAUGE:} Song vd.\ \cite{song2025help}, LLM--MCP etkileşimlerini proaktiflik (kendi kendine araç kullanma), uyumluluk, etkinlik ve genel gider (overhead) olmak üzere dört boyutta inceleyen MCPGAUGE çerçevesini tanıtmıştır. Çalışma, MCP entegrasyonunun otomatik olarak performans artışı garantilemediğini ve LLM'lerin özellikle uyumluluk ve proaktiflikte belirgin sınırlamalar sergilediğini göstermektedir.
+  \item \textbf{MCP‑Universe:} Luo vd.\ \cite{luo2025universe}, gerçek dünya MCP sunucularıyla etkileşimli görev setleri sunarak frontier modellerin bile bu gerçekçi senaryolarda önemli performans kısıtlarına sahip olduğunu ortaya koymuştur.
+\end{itemize}
+
+LiveMCP‑101 \cite{yin2025livemcp} ve MCPToolBench++ \cite{fan2025mcptoolbench} gibi çalışmalar da MCP ekosisteminin stres altında nasıl davrandığını ölçmekte; zamanlama, hata propagasyonu ve araç başarısızlıklarının sistem davranışına etkisini nicel olarak karakterize etmektedir.
+
+\subsection{Alan Uzmanlığı ve Standardizasyon Örnekleri}
+MCP'nin soyut mimarisi, farklı alanlara uyarlanabilir olduğunu göstermektedir:
+\begin{itemize}
+  \item \textbf{Biyoinformatik (MCPmed):} MCPmed topluluk girişimi, GEO ve STRING gibi geleneksel, insan merkezli web sunucularını LLM'ler için makine tarafından işlenebilir bir katmana dönüştürmeyi önermekte ve FAIR (Bulunabilir, Erişilebilir, Birlikte Çalışabilir, Yeniden Kullanılabilir) ilkelerinin yapay zekâ sistemlerine uygulanmasını tartışmaktadır \cite{flotho2025mcpmed}.
+  \item \textbf{Uyarlanabilir ulaşım sistemleri:} Chhetri vd.\ \cite{chhetri2025transport}, MCP benzeri bağlam protokollerinin akıllı ulaşım altyapılarında kullanımı için mimari bir çerçeve sunmakta ve güvenlik ile emniyet gereksinimlerinin birlikte ele alınması gerektiğini vurgulamaktadır.
+  \item \textbf{Kritik altyapı ve ekonomi:} Kritik altyapılarda varlık keşfi \cite{coppolino2025asset} ve iktisadi araştırma için ajan tabanlı yaklaşımlar \cite{korinek2025agents}, MCP tarzı protokollerin alan‑özgü veri kaynaklarının standartlaştırılmış biçimde ajanlara açılmasında nasıl rol oynayabileceğini göstermektedir.
+\end{itemize}
+
+Bu örnekler, MCP'nin yalnızca teknik bir entegrasyon standardı değil, aynı zamanda alanlararası bir güvenlik ve yönetişim problemi olduğunu ortaya koymaktadır.
+
+\section{Sonuç ve Gelecek Yönelimleri}
+Model Bağlam Protokolü (MCP), LLM ajan sistemlerinde standart bağlam paylaşımı ve birlikte çalışabilirliği sağlayarak $N \times M$ entegrasyon sorununa önemli bir çözüm sunmaktadır. Ancak protokolün hızla benimsenmesi, beraberinde geniş ve ortak bir saldırı yüzeyini de ortaya çıkarmıştır. Mevcut çalışmalar, araç zehirleme, dolaylı prompt enjeksiyonu ve araç zincirleme suistimali gibi yeni tehditlerin ciddiyetini ve MCP sunucularının güvenlik hijyeni konusundaki eksiklerini açıkça göstermektedir.
+
+Gelecekteki araştırma ve geliştirme çabalarının aşağıdaki yönlere odaklanması gerektiği değerlendirilmektedir:
+\begin{itemize}
+  \item \textbf{Güven sınırlarının güçlendirilmesi:} Merkezi olmayan ekosistemde güvenilirliği sağlamak için zorunlu yapılandırma doğrulaması, otomatik sürüm kontrolü ve bütünlük denetimi gibi teknik yönetişim çözümlerinin uygulanması.
+  \item \textbf{Protokol düzeyinde güvenlik:} zMCP gibi Sıfır Güven (Zero Trust) yaklaşımlarının protokole entegrasyonu ve araç zehirlemesi gibi anlamsal saldırıları engelleyen bilgi akışı kontrolü (IFC) mekanizmalarının geliştirilmesi.
+  \item \textbf{LLM optimizasyonu:} MCPGAUGE tarafından belirlenen uyumluluk ve genel gider (overhead) sorunlarını azaltmak için LLM'lerin MCP kullanımı için özel olarak eğitilmesi ve kod yürütme (code execution) gibi belirteç verimliliği sağlayan desenlerin yaygınlaştırılması.
+  \item \textbf{Çoklu ajan koordinasyonu:} Birden fazla ajanın aynı MCP sunucusunu koordine olarak kullandığı senaryolar için kilitlenme (deadlock) önleme ve kaynak paylaşım protokollerinin geliştirilmesi.
+\end{itemize}
+
+MCP, sürdürülebilir büyüme için gereken temel yapı taşlarını sunmaktadır. Ancak bu protokolün potansiyelini tam olarak gerçekleştirebilmesi, inovasyon ile emniyet arasındaki dengenin dikkatle kurulmasına ve ajanik güvenlik yönetişiminin ekosistemin merkezine yerleştirilmesine bağlıdır.
 
 \begin{thebibliography}{99}
-\bibitem{hou2025landscape} Hou, X., Zhao, Y., Wang, S., \& Wang, H. (2025). \textit{Model Context Protocol (MCP): Landscape, Security Threats, and Future Research Directions}. arXiv:2503.23278.
-\bibitem{krishnan2025multiagent} Krishnan, N. (2025). \textit{Advancing Multi-Agent Systems Through Model Context Protocol}. arXiv:2504.21030.
-\bibitem{ehtesham2025survey} Ehtesham, A., Singh, A., Gupta, G. K., \& Kumar, S. (2025). \textit{A survey of agent interoperability protocols}. arXiv:2505.02279.
-\bibitem{hasan2025firstglance} Hasan, M. M., Li, H., Fallahzadeh, E., Rajbahadur, G. K., Adams, B., \& Hassan, A. E. (2025). \textit{Model Context Protocol (MCP) at First Glance}. arXiv:2506.13538.
-\bibitem{flotho2025mcpmed} Flotho, M., Diks, I. F., Flotho, P., Molano, L.-A. G., Hirsch, P., \& Keller, A. (2025). \textit{MCPmed}. arXiv:2507.08055.
-\bibitem{mastouri2025rest} Mastouri, M., Ksontini, E., \& Kessentini, W. (2025). \textit{Making REST APIs Agent-Ready}. arXiv:2507.16044.
-\bibitem{fan2025mcptoolbench} Fan, S., Ding, X., Zhang, L., \& Mo, L. (2025). \textit{MCPToolBench++}. arXiv:2508.07575.
-\bibitem{xing2025guard} Xing, W., Qi, Z., Qin, Y., Li, Y., Chang, C., et al. (2025). \textit{MCP-Guard}. arXiv:2508.10991.
-\bibitem{song2025help} Song, W., Zhong, H., Ding, Z., Xue, J., \& Li, Y. (2025). \textit{Help or Hurdle?}. arXiv:2508.12566.
-\bibitem{luo2025universe} Luo, Z., Shen, Z., Yang, W., Zhao, Z., Jwalapuram, P., et al. (2025). \textit{MCP-Universe}. arXiv:2508.14704.
-\bibitem{yin2025livemcp} Yin, M., Shen, D., Xu, S., Han, J., Dong, S., et al. (2025). \textit{LiveMCP-101}. arXiv:2508.15760.
-\bibitem{chhetri2025transport} Chhetri, G., Somvanshi, S., Islam, M. M., Brotee, S., Mimi, M. S., et al. (2025). \textit{Model Context Protocols in Adaptive Transport Systems}. arXiv:2508.19239.
-\bibitem{tokal2025agentx} Tokal, S. S. K. A., Jha, V., Eswaran, A., Jayachandran, P., \& Simmhan, Y. (2025). \textit{AgentX}. arXiv:2509.07595.
-\bibitem{he2025automated} He, P., Li, C., Zhao, B., Du, T., \& Ji, S. (2025). \textit{Automatic Red Teaming LLM-based Agents}. arXiv:2509.21011.
-\bibitem{singh2025survey} Singh, A., Ehtesham, A., Kumar, S., \& Talaei Khoei, T. (2025). \textit{A Survey of the Model Context Protocol (MCP)}. Preprints 202504.0245.
-\bibitem{bhandarwar2025integrating} Bhandarwar, N. (2025). \textit{Integrating Generative AI and Model Context Protocol}. Int. J. of Computer Trends and Technology.
-\bibitem{coppolino2025asset} Coppolino, L., Iannaccone, A., Nardone, R., \& Petruolo, A. (2025). \textit{Asset Discovery in Critical Infrastructures: An LLM-Based Approach}. Electronics 14(32):3267.
-\bibitem{korinek2025agents} Korinek, A. (2025). \textit{AI Agents for Economic Research}. NBER Working Paper 34202.
+\bibitem{hou2025landscape} X.~Hou, Y.~Zhao, S.~Wang, and H.~Wang, ``Model Context Protocol (MCP): Landscape, Security Threats, and Future Research Directions,'' \emph{arXiv preprint arXiv:2503.23278}, 2025.
+\bibitem{krishnan2025multiagent} N.~Krishnan, ``Advancing Multi-Agent Systems Through Model Context Protocol: Architecture, Implementation, and Applications,'' \emph{arXiv preprint arXiv:2504.21030}, 2025.
+\bibitem{ehtesham2025survey} A.~Ehtesham, A.~Singh, G.~K.~Gupta, and S.~Kumar, ``A survey of agent interoperability protocols: Model Context Protocol (MCP), Agent Communication Protocol (ACP), Agent-to-Agent Protocol (A2A), and Agent Network Protocol (ANP),'' \emph{arXiv preprint arXiv:2505.02279}, 2025.
+\bibitem{hasan2025firstglance} M.~M.~Hasan, H.~Li, E.~Fallahzadeh, G.~K.~Rajbahadur, B.~Adams, and A.~E.~Hassan, ``Model Context Protocol (MCP) at First Glance: Studying the Security and Maintainability of MCP Servers,'' \emph{arXiv preprint arXiv:2506.13538}, 2025.
+\bibitem{flotho2025mcpmed} M.~Flotho, I.~F.~Diks, P.~Flotho, L.-A.~G.~Molano, P.~Hirsch, and A.~Keller, ``MCPmed: A Call for MCP-Enabled Bioinformatics Web Services for LLM-Driven Discovery,'' \emph{arXiv preprint arXiv:2507.08055}, 2025.
+\bibitem{mastouri2025rest} M.~Mastouri, E.~Ksontini, and W.~Kessentini, ``Making REST APIs Agent-Ready: From OpenAPI to MCP Servers for Tool-Augmented LLMs,'' \emph{arXiv preprint arXiv:2507.16044}, 2025.
+\bibitem{fan2025mcptoolbench} S.~Fan, X.~Ding, L.~Zhang, and L.~Mo, ``MCPToolBench++: A Large Scale AI Agent Model Context Protocol MCP Tool Use Benchmark,'' \emph{arXiv preprint arXiv:2508.07575}, 2025.
+\bibitem{xing2025guard} W.~Xing, Z.~Qi, Y.~Qin, Y.~Li, C.~Chang, J.~Yu, C.~Lin, Z.~Xie, and M.~Han, ``MCP-Guard: A Defense Framework for Model Context Protocol Integrity in Large Language Model Applications,'' \emph{arXiv preprint arXiv:2508.10991}, 2025.
+\bibitem{song2025help} W.~Song, H.~Zhong, Z.~Ding, J.~Xue, and Y.~Li, ``Help or Hurdle? Rethinking Model Context Protocol-Augmented Large Language Models,'' \emph{arXiv preprint arXiv:2508.12566}, 2025.
+\bibitem{luo2025universe} Z.~Luo, Z.~Shen, W.~Yang, Z.~Zhao, P.~Jwalapuram \emph{et al.}, ``MCP-Universe: Benchmarking Large Language Models with Real-World Model Context Protocol Servers,'' \emph{arXiv preprint arXiv:2508.14704}, 2025.
+\bibitem{yin2025livemcp} M.~Yin, D.~Shen, S.~Xu, J.~Han, S.~Dong \emph{et al.}, ``LiveMCP-101: Stress Testing and Diagnosing MCP-enabled Agents on Challenging Queries,'' \emph{arXiv preprint arXiv:2508.15760}, 2025.
+\bibitem{chhetri2025transport} G.~Chhetri, S.~Somvanshi, M.~M.~Islam, S.~Brotee, M.~S.~Mimi \emph{et al.}, ``Model Context Protocols in Adaptive Transport Systems: A Survey,'' \emph{arXiv preprint arXiv:2508.19239}, 2025.
+\bibitem{tokal2025agentx} S.~S.~K.~A.~Tokal, V.~Jha, A.~Eswaran, P.~Jayachandran, and Y.~Simmhan, ``AgentX: Towards Orchestrating Robust Agentic Workflow Patterns with FaaS-hosted MCP Services,'' \emph{arXiv preprint arXiv:2509.07595}, 2025.
+\bibitem{he2025automated} P.~He, C.~Li, B.~Zhao, T.~Du, and S.~Ji, ``Automatic Red Teaming LLM-based Agents with Model Context Protocol Tools,'' \emph{arXiv preprint arXiv:2509.21011}, 2025.
+\bibitem{singh2025survey} A.~Singh, A.~Ehtesham, S.~Kumar, and T.~T.~Khoei, ``A Survey of the Model Context Protocol (MCP): Standardizing Context to Enhance Large Language Models (LLMs),'' \emph{Preprints 202504.0245}, 2025.
+\bibitem{bhandarwar2025integrating} N.~Bhandarwar, ``Integrating Generative AI and Model Context Protocol (MCP) with Applied Machine Learning for Advanced Agentic AI Systems,'' \emph{International Journal of Computer Trends and Technology}, 2025.
+\bibitem{coppolino2025asset} L.~Coppolino, A.~Iannaccone, R.~Nardone, and A.~Petruolo, ``Asset Discovery in Critical Infrastructures: An LLM-Based Approach,'' \emph{Electronics}, vol.~14, no.~32, p.~3267, 2025.
+\bibitem{korinek2025agents} A.~Korinek, ``AI Agents for Economic Research,'' NBER Working Paper~34202, 2025.
+\bibitem{narajala2025enterprise} V.~S.~Narajala and I.~Habler, ``Enterprise-Grade Security for the Model Context Protocol (MCP): Frameworks and Mitigation Strategies,'' \emph{arXiv preprint arXiv:2504.08623}, 2025.
+\bibitem{radosevich2025audit} B.~Radosevich and J.~Halloran, ``MCP Safety Audit: LLMs with the Model Context Protocol Allow Major Security Exploits,'' \emph{arXiv preprint arXiv:2504.03767}, 2025.
 \end{thebibliography}
 
 \end{document}
