@@ -1,8 +1,16 @@
 # MCP-Agentic-Security-Review
 
-[Canlı landing page](https://yusufarbc.github.io/MCP-Agentic-Security-Review/) • IEEE makalesi, medya kit’i ve 18 dosyalık referans kütüphanesi
+## Canlı web sayfası
 
-![MCP mimarisi ve performans özetleri](media/MCP.png)
+**https://yusufarbc.github.io/MCP-Agentic-Security-Review/**
+
+IEEE makalesi, medya kit’i ve 18 dosyalık referans kütüphanesini özetleyen landing page bu adreste yayınlanır.
+
+### Öne çıkan görseller
+
+| ![Yapay zeka ajanları için yeni standart](media/MCP.png) | ![Ajanlar arası iletişim: MCP ve diğer protokoller](media/infografik.png) | ![MCP istemci–sunucu mimarisi](media/client-server-model.png) |
+| --- | --- | --- |
+| **MCP.png** – Yapay zeka ajanları için yeni standart | **infografik.png** – Ajanlar arası iletişim, MCP ve diğer protokoller | **client-server-model.png** – MCP istemci–sunucu mimarisi |
 
 Repo, Model Context Protocol (MCP) ekosisteminin mimari, tehdit ve savunma boyutlarını inceleyen akademik çalışmayı içerir.
 `index.html` depo içeriğini tek ekranda anlatırken `paper/`, `media/` ve `reference/` klasörleri ayrıntılı materyal sağlar.
@@ -28,7 +36,6 @@ Repo, Model Context Protocol (MCP) ekosisteminin mimari, tehdit ve savunma boyut
 
 | Görsel | Açıklama |
 | ------ | -------- |
-| `media/infografik.png` | NotebookLM üretimi agent protokolü sorun/çözüm infografiği (MCP/ACP/A2A/ANP). |
 | `media/model.png` | MCP mimarisi + Python ile sunucu inşa adımlarını anlatan poster. |
 | `media/post.jpeg` | MCP host, protokol katmanı ve 17 tehdit vektörünü sıralayan şema. |
 | `media/diagram.png` | LLM → MCP istemcisi → çoklu sunucu bağlantısını gösteren akış. |
