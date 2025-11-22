@@ -55,12 +55,4 @@ pdflatex paper.tex
 
 Bu dosyalar, hem makale yazımı sırasında hem de gelecekteki sunum / rapor çalışmalarında doğrudan kaynak olarak kullanılabilir.
 
-## Diğer README’lerde Yeniden Kullanım
-
-Bu kök `README.md` içindeki bölümler, alt dizinlerdeki `README.md` dosyalarına kopyalanarak yeniden kullanılabilir:
-
-- Medya için: yukarıdaki “Medya (media/)” başlığı altındaki görsel ve video açıklamaları.
-- Genel bağlam için: “Hızlı Bakış” ve “Makale (paper/)” bölümleri.
-
-Bu sayede, repo içinde tutarlı bir proje tanımı ve ortak görsel/video referansları korunmuş olur.
 
