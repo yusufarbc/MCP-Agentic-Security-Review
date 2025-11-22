@@ -1,54 +1,66 @@
 # MCP-Agentic-Security-Review
 
-Model Context Protocol (MCP) ve MCP tabanlı yapay zeka ajanlarının güvenlik boyutları üzerine araştırma, analiz ve kaynak derlemeleri.
+Bu repo, Model Context Protocol (MCP) ekosisteminin mimari ve güvenlik boyutlarını inceleyen akademik çalışmayı, kullanılan görsel/video materyallerini ve literatür referanslarını bir araya getirir.
 
-## İçindekiler
-- [Proje özeti](#proje-özeti)
-- [Depo yapısı](#depo-yapısı)
-- [Hızlı başlangıç](#hızlı-başlangıç)
-- [Video](#video)
-- [Görseller](#görseller)
-- [Ana belgeler](#ana-belgeler)
-- [Katkı ve iletişim](#katkı-ve-iletişim)
+- `paper/` — IEEE formatında LaTeX makale taslağı ve derlenmiş PDF.
+- `media/` — Makale ve sunumlarda kullanılan infografikler ve video.
+- `reference/` — MCP ve ajan sistemleri üzerine derlenmiş akademik makaleler.
 
-## Proje özeti
-Bu depodaki ana belge `research.md`, MCP'nin teknik mimarisi, güvenlik tehdit modeli, iyi uygulamalar ve literatür özetiyle birlikte güncel olaylar (X/Twitter bağlantılarıyla) bölümlerini içerir. Akademik ve sektörel kaynaklar Türkçe özetlerle zenginleştirilmiştir. Depo aynı zamanda bir akademik bildiri taslağı (`paper/paper.pdf`) ve detaylı referans arşivi (`reference/`) barındırır.
+## Hızlı Bakış
 
-## Depo yapısı
-- `research.md`: Ana rapor (özet, mimari, tehdit modeli, iyi uygulamalar, literatür, Google Scholar sentezi, güncel olaylar ve genişletilmiş analiz).
-- `paper/`: Makale/çalışma taslakları ve IEEE formatında bildiri (`paper/paper.pdf`, açıklama için `paper/README.md`).
-- `reference/`: Literatür listesi ve ilgili çalışmaların PDF'leri (özetler için `reference/Readme.md`).
-- `media/`: Depoya ait video ve görseller (detaylar için `media/README.md`).
+- **Odak:** MCP’nin mimarisi, tehdit modeli, agentic güvenlik yönetişimi ve ekosistem literatürü.
+- **Çıktı:** IEEE konferans formatında akademik makale (`paper/paper.pdf`).
+- **Veri kaynağı:** 2024–2025 arası MCP odaklı  akademik yayınlar ve endüstriyel raporlar (`reference/` klasörü).
 
-## Hızlı başlangıç
-1. **Gereksinimler**  
-   Yalnızca Git ve (isteğe bağlı olarak) bir LaTeX dağıtımı yeterlidir.
-2. **Depoyu güncelleme**  
-   Depo zaten yerelinizde. Güncel tutmak için normal Git akışını kullanabilirsiniz:
-   - `git pull`
-3. **Önerilen okuma sırası**  
-   - Genel kavramsal ve teknik arka plan için: `research.md`
-   - Akademik bildiri taslağı için: `paper/paper.pdf`
-   - Literatür özeti ve kaynak listesi için: `reference/Readme.md`
+## Makale (paper/)
 
-## Video
-Bu depo, MCP tabanlı yapay zeka ajanlarıyla ilgili kısa bir tanıtım videosu içerir.
+`paper/` dizini, IEEEtran şablonunu kullanan ana raporu içerir:
 
-- **YouTube:**  
-  [Yapay Zeka Ajanları için MCP](https://www.youtube.com/watch?v=MgGM5rkxL0c)
-- **Yerel video dosyası:**  
-  [`media/Yapay_Zeka_Ajanlari.mp4`](media/Yapay_Zeka_Ajanlari.mp4)
+- `paper.tex` — LaTeX kaynak dosyası (Türkçe ve İngilizce özet, mimari, tehdit modeli, savunma çerçeveleri vb.).
+- `paper.pdf` — Derlenmiş sürüm.
+- `protocol.png` — Makalede kullanılan MCP istemci–sunucu mimarisi şeması.
 
-## Görseller
-| Görsel | Açıklama | Yol |
-| --- | --- | --- |
-| ![MCP Infografik](media/infografik.png) | MCP ekosistemi ve tehdit modeline dair infografik. | `media/infografik.png` |
-| ![MCP Şeması](media/MCP.png) | MCP mimarisi ve bileşenlerini gösteren şema. | `media/MCP.png` |
+Derleme (MiKTeX / TeX Live):
 
-## Ana belgeler
-- `research.md`: Tam rapor ve genişletilmiş “Güncel Olaylar” bölümü (her X bağlantısı için tek satırlık bağlam açıklaması ile).
-- `paper/paper.pdf`: IEEE formatında hazırlanmış, MCP'nin mimari paradigmalarını, tehdit taksonomisini ve ajanlık güvenlik yönetimini eleştirel biçimde inceleyen akademik bildiri taslağı.
+```bash
+cd paper
+pdflatex paper.tex
+bibtex   paper   
+pdflatex paper.tex
+pdflatex paper.tex
+```
 
-## Katkı ve iletişim
-Geri bildirim, katkı ve sorularınız için GitHub üzerinden issue açabilir veya depo sahibiyle iletişime geçebilirsiniz.
+## Medya (media/)
+
+`media/` dizini, makale ve sunumlarda yeniden kullanılabilecek görsel ve video dosyalarını içerir:
+
+![MCP Ekosistemi ve Tehdit Modeli](media/infografik.png)
+
+![MCP Mimarisi / Ekosistemi](media/MCP.png)
+
+- `infografik.png` — MCP ekosistemi ve tehdit taksonomisini özetleyen infografik.
+- `MCP.png` — MCP mimarisi / ekosistemi görseli.
+- `Yapay_Zeka_Ajanlari.mp4` — “Yapay Zeka Ajanları için MCP” video demosunun yerel kopyası.
+- YouTube: [Yapay Zeka Ajanları için MCP](https://www.youtube.com/watch?v=MgGM5rkxL0c)
+
+
+
+## Referanslar (reference/)
+
+`reference/` dizini, MCP ekosistemiyle ilgili temel akademik çalışmaları PDF formatında içerir. Dosya adları, makale başlığı ve kısa konusunu yansıtacak biçimde numaralandırılmıştır. Örnekler:
+
+- `01 - Model Context Protocol (MCP) - Landscape, Security Threats, and Future Research Directions.pdf`
+- `04 - Model Context Protocol (MCP) at First Glance - Studying the Security and Maintainability of MCP Servers.pdf`
+- `08 - MCP-Guard - A Defense Framework for Model Context Protocol Integrity in Large Language Model Applications.pdf`
+
+Bu dosyalar, hem makale yazımı sırasında hem de gelecekteki sunum / rapor çalışmalarında doğrudan kaynak olarak kullanılabilir.
+
+## Diğer README’lerde Yeniden Kullanım
+
+Bu kök `README.md` içindeki bölümler, alt dizinlerdeki `README.md` dosyalarına kopyalanarak yeniden kullanılabilir:
+
+- Medya için: yukarıdaki “Medya (media/)” başlığı altındaki görsel ve video açıklamaları.
+- Genel bağlam için: “Hızlı Bakış” ve “Makale (paper/)” bölümleri.
+
+Bu sayede, repo içinde tutarlı bir proje tanımı ve ortak görsel/video referansları korunmuş olur.
 
