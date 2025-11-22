@@ -4,33 +4,51 @@
 
 **https://yusufarbc.github.io/MCP-Agentic-Security-Review/**
 
-IEEE makalesi, medya kit’i ve 18 dosyalık referans kütüphanesini özetleyen landing page bu adreste yayınlanır.
+Bu depo, Model Context Protocol (MCP) ekosisteminin mimari, tehdit ve savunma boyutlarını inceleyen akademik çalışmayı,
+görsel medya setini ve 18 makalelik referans kütüphanesini bir araya getirir. Kökteki `index.html` ve GitHub Pages’teki
+canlı sayfa, bu içeriği tek ekranda özetler.
 
-### Öne çıkan görseller
+## Öne çıkan görseller
 
-| ![Yapay zeka ajanları için yeni standart](media/MCP.png) | ![Ajanlar arası iletişim: MCP ve diğer protokoller](media/infografik.png) | ![MCP istemci–sunucu mimarisi](media/client-server-model.png) |
-| --- | --- | --- |
-| **MCP.png** – Yapay zeka ajanları için yeni standart | **infografik.png** – Ajanlar arası iletişim, MCP ve diğer protokoller | **client-server-model.png** – MCP istemci–sunucu mimarisi |
+### MCP.png – Yapay zeka ajanları için yeni standart
+![Yapay zeka ajanları için yeni standart](media/MCP.png)
 
-Repo, Model Context Protocol (MCP) ekosisteminin mimari, tehdit ve savunma boyutlarını inceleyen akademik çalışmayı içerir.
-`index.html` depo içeriğini tek ekranda anlatırken `paper/`, `media/` ve `reference/` klasörleri ayrıntılı materyal sağlar.
+Bu görsel MCP’nin, LLM tabanlı ajanlar için yeni bir “standart bağlam katmanı” olarak nasıl konumlandığını; entegrasyon
+kaosunu azaltıp güvenlik ve tutarlılık kazandırdığını anlatır.
+
+### infografik.png – Ajanlar arası iletişim, MCP ve diğer protokoller
+![Ajanlar arası iletişim: MCP ve diğer protokoller](media/infografik.png)
+
+NotebookLM tabanlı bu infografik, ajanlar arası iletişimde yaşanan zorlukları ve MCP/ACP/A2A/ANP gibi protokollerin
+birlikte çalışabilirlik çözümlerini yan yana gösterir.
+
+### client-server-model.png – MCP istemci–sunucu mimarisi
+![MCP istemci–sunucu mimarisi](media/client-server-model.png)
+
+Bu diyagram, kullanıcının isteğinin LLM → MCP istemcisi → çoklu MCP sunucuları → araçlar zincirinde nasıl aktığını,
+her sunucunun kendi araç setini barındırdığını ve MCP’nin bu etkileşimi standartlaştırdığını gösterir.
 
 ## MCP neden kritik?
 
-- **Evrensel adaptör:** LLM tabanlı ajanların araç, API, veri kaynağı ve cihazlarla konuşmasını JSON-RPC tabanlı ortak dilde yönetir.
-- **Risk panoraması:** 4 aktör (kötü niyetli geliştirici/kullanıcı, dış saldırgan, yazılım hatası) ve 16 senaryo; 1.899 sunucu taramasında %7.2 genel açık, %5.5 araç zehirlenmesi ve %66 kod kokusu görüldü.
-- **Benchmark bulguları:** MCPGAUGE her zaman fayda sağlamıyor; MCP-Universe/LiveMCP-101 < %60 başarı raporluyor; MCPToolBench++ format çeşitliliğini darboğaz olarak gösterirken AutoMalTool savunmaları aşabiliyor (MCP-Guard %96 doğrulukla yakalayabiliyor).
-- **Savunma stratejileri:** IFC + taint tracking, sandbox profilleri, OAuth/mTLS + scoped token, plan tabanlı test + logging + red team, imzalı paket/SBOM ve OpenAPI→AutoMCP otomasyonu.
+- **Evrensel adaptör:** LLM tabanlı ajanların araç, API, veri kaynağı ve cihazlarla konuşmasını JSON-RPC tabanlı ortak
+  bir dilde yönetir.
+- **Risk panoraması:** 4 aktör (kötü niyetli geliştirici/kullanıcı, dış saldırgan, yazılım/konfigürasyon hatası) ve
+  16 senaryo; 1.899 sunuculuk taramada %7.2 genel açık, %5.5 araç zehirlenmesi ve %66 kod kokusu raporlanmıştır.
+- **Benchmark bulguları:** MCPGAUGE her zaman fayda sağlamaz; MCP-Universe/LiveMCP-101 gerçek sunucularda < %60 başarı
+  raporlar; MCPToolBench++ format çeşitliliğini darboğaz olarak gösterirken AutoMalTool birçok savunmayı aşabilmektedir
+  (MCP-Guard çok katmanlı tespitle %96 doğruluk seviyesine ulaşır).
+- **Savunma stratejileri:** IFC + taint tracking, sandbox profilleri, OAuth/mTLS + scoped token, plan tabanlı test +
+  logging + red team, imzalı paket/SBOM ve OpenAPI→AutoMCP otomasyonu önerilir.
 
 ## Repo haritası
 
-| Yol           | İçerik                                                                                                   |
-| ------------- | --------------------------------------------------------------------------------------------------------- |
-| `index.html`  | Landing page: depo yapısı, medya galerisi, referans tablosu, güvenlik özet ve YouTube demosu.             |
-| `paper/`      | IEEEtran LaTeX kaynakları (`paper.tex`, `paper.pdf`, `protocol.png`, log/aux dosyaları).                  |
+| Yol           | İçerik                                                                                                      |
+| ------------- | ----------------------------------------------------------------------------------------------------------- |
+| `index.html`  | Landing page: depo yapısı, medya galerisi, referans tablosu, güvenlik özeti ve YouTube demosu.            |
+| `paper/`      | IEEEtran LaTeX kaynakları (`paper.tex`, `paper.pdf`, `protocol.png`, log/aux dosyaları).                   |
 | `media/`      | Infografikler, NotebookLM posterleri, MCP host diyagramları, protokol şeması ve `Yapay_Zeka_Ajanlari.mp4`.|
 | `reference/`  | 01–18 PDF; MCP-Guard, AutoMalTool, MCPGAUGE, MCPmed, AgentX, A2AS, ekonomik ajanlar vb. konular.          |
-| kök dosyalar  | `.editorconfig`, `.gitattributes`, `.gitignore`, README ve GitHub Pages için gerekli altyapı.            |
+| kök dosyalar  | `.editorconfig`, `.gitattributes`, `.gitignore`, README ve GitHub Pages için gerekli altyapı.             |
 
 ## Media vitrininden seçmeler
 
@@ -46,8 +64,10 @@ Repo, Model Context Protocol (MCP) ekosisteminin mimari, tehdit ve savunma boyut
 
 ## Referans kütüphanesi (`reference/`)
 
-- 18 PDF; MCP mimarisi, benchmark setleri (MCPGAUGE, MCPToolBench++, LiveMCP-101), AutoMalTool, MCP-Guard, MCPmed, AgentX, A2AS, AI Agents for Economic Research gibi alanları kapsar.
-- `reference/Readme.md` tüm makaleler için Türkçe/İngilizce özet içerir. Yeni kaynak eklerken dosyayı numaralandırıp Readme’ye not düşmeniz yeterli.
+- 18 PDF; MCP mimarisi, benchmark setleri (MCPGAUGE, MCPToolBench++, LiveMCP-101), AutoMalTool, MCP-Guard, MCPmed,
+  AgentX, A2AS, AI Agents for Economic Research gibi alanları kapsar.
+- `reference/Readme.md` tüm makaleler için Türkçe/İngilizce özet içerir. Yeni kaynak eklerken dosyayı numaralandırıp
+  Readme’ye not düşmeniz yeterli.
 
 ## Makaleyi derlemek (`paper/`)
 
@@ -65,7 +85,10 @@ pdflatex paper.tex
 
 1. `index.html`’i tarayıcıda açarak mevcut içerik özetini kontrol edin (GitHub Pages bağlantısı yukarıda).
 2. Medya ve referanslar güncellendiğinde hem ilgili Readme dosyalarını hem de landing page bölümlerini senkron tutun.
-3. MCP güvenlik bulguları (örn. LiveMCP-101 sonuçları, AutoMalTool logları) geldiğinde `paper/` veya yeni `reports/` dizinine ekleyin.
-4. Gelecekte OAuth/mTLS referans konfigürasyonları, guard-model senaryoları ve SBOM üretim skriptleri için `docs/` veya `scripts/` klasörleri oluşturabilirsiniz.
+3. MCP güvenlik bulguları (örn. LiveMCP-101 sonuçları, AutoMalTool logları) geldiğinde `paper/` veya yeni `reports/`
+   dizinine ekleyin.
+4. Gelecekte OAuth/mTLS referans konfigürasyonları, guard-model senaryoları ve SBOM üretim skriptleri için `docs/` veya
+   `scripts/` klasörleri oluşturabilirsiniz.
 
-README ve `index.html`, MCP-Agentic-Security-Review deposu için yüksek seviyeli rehber görevi görür; çalışma ilerledikçe güncel kalmaları gerekir.
+README ve `index.html`, MCP-Agentic-Security-Review deposu için yüksek seviyeli rehber görevi görür; çalışma ilerledikçe
+güncel kalmaları gerekir.
